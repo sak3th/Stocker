@@ -11,6 +11,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:textSize="18dp"
+            android:fontFamily="sans-serif-light"
             android:text="add stock"
             android:id="@+id/textViewADTitle"/>
 
@@ -104,7 +105,11 @@
             android:layout_toLeftOf="@+id/spaceMiddle"
             android:layout_below="@id/textViewADNotifyLeft"
             android:layout_marginTop="40dp"
+            android:background="@drawable/pos_btn_bg"
             android:textAllCaps="false"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="18dp"
+            android:fontFamily="sans-serif-light"
             android:text="add"
             android:id="@+id/buttonAddAD"/>
 
@@ -115,6 +120,10 @@
             android:layout_below="@id/textViewADNotifyLeft"
             android:layout_marginTop="40dp"
             android:textAllCaps="false"
+            android:background="@drawable/neu_btn_bg"
+            android:textColor="@android:color/primary_text_dark"
+            android:textSize="18dp"
+            android:fontFamily="sans-serif-light"
             android:text="cancel"
             android:id="@+id/buttonCancelAD"/>
 </RelativeLayout>
