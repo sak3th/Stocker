@@ -37,6 +37,9 @@ public class HomeActivity extends Activity implements View.OnClickListener,
         setImmersive();
         mButton = (ImageButton) findViewById(R.id.fabAdd);
         mButton.setOnClickListener(this);
+        mConnMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        registerReceiver(mConnectivityReceiver,
+                new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
         if (findViewById(R.id.fragment_container) != null) {
             if (savedInstanceState != null) {
                 return;
@@ -47,9 +50,6 @@ public class HomeActivity extends Activity implements View.OnClickListener,
             fragment.setArguments(getIntent().getExtras());
             getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
-        mConnMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        registerReceiver(mConnectivityReceiver,
-                new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
     }
 
     @Override
