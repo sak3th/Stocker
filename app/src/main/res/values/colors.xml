@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="stocker_primary">#78CFC7</color>
+    <color name="divider">#DDDDDD</color>
+    <color name="dialog_text">#757999</color>
+    <color name="dialog_neg_button">#ABADC1</color>
+    <color name="picker_bg">#9597AE</color>
+    <color name="green">#46C55C</color>
+    <color name="red">#FE718E</color>
+</resources>

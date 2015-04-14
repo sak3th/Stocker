@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_stock_height"
+    android:id="@+id/stockItemLayout">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:gravity="center"
+        android:textSize="@dimen/item_stock_text_size"
+        android:fontFamily="sans-serif-light"
+        android:text="Stock [STK]"
+        android:id="@+id/tvStockName"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-light"
+        android:textSize="@dimen/item_stock_text_size"
+        android:text="$120"
+        android:id="@+id/tvStockPrice"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@color/divider"/>
+</RelativeLayout>
