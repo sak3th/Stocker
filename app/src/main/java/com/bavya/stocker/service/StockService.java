@@ -12,12 +12,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.bavya.stocker.R;
 import com.bavya.stocker.activity.HomeActivity;
@@ -34,17 +35,29 @@ import yahoofinance.YahooFinance;
 public class StockService extends IntentService {
     private static final String TAG = "StockerService";
 
+    private static final boolean NOTI_DEBUG_TEST = false;
+
     public static final String ACTION_BOOT = Intent.ACTION_BOOT_COMPLETED;
     public static final String ACTION_GET_STOCKS = "bavya.stocker.action.GET_STOCKS";
     public static final String ACTION_REFRESH = "bavya.stocker.action.REFRESH_STOCKS";
+    public static final String ACTION_CONNECTVITY_CHANGE = ConnectivityManager.CONNECTIVITY_ACTION;
 
     public static final String ACTION_STOCK_NOT_FOUND = "bavya.stocker.action.STOCK_NOT_FOUND";
+    public static final String ACTION_STOCKS_UPDATED = "bavya.stocker.action.STOCKS_UPDATED";
 
     private static boolean BG_REFRESH_ENABLED = false;
+
+    private ConnectivityManager mConnMgr;
 
     public static void startOnBootComplete(Context context) {
         Intent intent = new Intent(context, StockService.class);
         intent.setAction(ACTION_BOOT);
+        context.startService(intent);
+    }
+
+    public static void connectivityChanged(Context context) {
+        Intent intent = new Intent(context, StockService.class);
+        intent.setAction(ACTION_CONNECTVITY_CHANGE);
         context.startService(intent);
     }
 
@@ -56,7 +69,13 @@ public class StockService extends IntentService {
         context.startService(intent);
     }
 
-    public static void setBackgroundRefresh(Context context, boolean set) {
+    public static void refreshStocks(Context context) {
+        Intent intent = new Intent(context, StockService.class);
+        intent.setAction(ACTION_REFRESH);
+        context.startService(intent);
+    }
+
+    public static void setBackgroundRefreshAlarm(Context context, boolean set) {
         if (BG_REFRESH_ENABLED != set) {
             AlarmManager alarmMgr = (AlarmManager) context.getSystemService(ALARM_SERVICE);
             Intent intent = new Intent(context, StockService.class);
@@ -83,13 +102,20 @@ public class StockService extends IntentService {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        mConnMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+    }
+
+    @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
             Log.d(TAG, "Received " + action);
             if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
-                handleBoot();
-                Toast.makeText(getApplicationContext(), "BOOT COMPLETE", Toast.LENGTH_LONG).show();
+                handleActionRefresh();
+            } else if (ACTION_CONNECTVITY_CHANGE.equals(action)) {
+                handleConnectivityChange();
             } else if (ACTION_GET_STOCKS.equals(action)) {
                 String[] symbols = intent.getStringArrayExtra("key_symbols");
                 int[] changes = intent.getIntArrayExtra("key_changes");
@@ -101,27 +127,22 @@ public class StockService extends IntentService {
     }
 
     private void handleBoot() {
-        boolean refresh = false;
-        ContentResolver resolver  = getContentResolver();
-        Cursor c = resolver.query(Stocker.Stocks.CONTENT_URI,
-                Stocker.Stocks.PROJECTION_ALL, null, null, null);
-        if (c != null) {
-            if (c.getCount() > 0) {
-                refresh = true;
-            }
-            c.close();
-        }
-        if (refresh) {
-            handleActionRefresh();
-        }
-        setBackgroundRefresh(getApplicationContext(), refresh);
+        handleActionRefresh();
+    }
+
+    private void handleConnectivityChange() {
+        setBackgroundRefreshAlarm(getApplicationContext(), isConnected());
     }
 
     private void handleGetStocks(String[] symbols, int[] changes) {
+        if (!isConnected()) {
+            return;
+        }
         HashMap<String, Integer> changeMap = new HashMap<String, Integer>();
         for (int i = 0; i < symbols.length; i++) {
             changeMap.put(symbols[i], changes[i]);
         }
+        boolean updated = false;
         Map<String, yahoofinance.Stock> resMap = YahooFinance.get(symbols);
         for (Map.Entry<String, yahoofinance.Stock> entry : resMap.entrySet()) {
             yahoofinance.Stock stk = entry.getValue();
@@ -133,11 +154,18 @@ public class StockService extends IntentService {
                 Stock stock = new Stock(stk);
                 stock.change = changeMap.get(entry.getKey());
                 updateStockToDb(stock);
+                updated = true;
             }
+        }
+        if (updated) {
+            setBackgroundRefreshAlarm(getApplicationContext(), true);
         }
     }
 
     private void handleActionRefresh() {
+        if (!isConnected()) {
+            return;
+        }
         ContentResolver resolver  = getContentResolver();
         Cursor c = resolver.query(Stocker.Stocks.CONTENT_URI,
                 Stocker.Stocks.PROJECTION_ALL, null, null, null);
@@ -160,8 +188,11 @@ public class StockService extends IntentService {
                         notifyChanges(old, cur);
                     }
                 }
+                LocalBroadcastManager.getInstance(
+                        getApplicationContext()).sendBroadcast(new Intent(ACTION_STOCKS_UPDATED));
+                setBackgroundRefreshAlarm(getApplicationContext(), true);
             } else {
-                setBackgroundRefresh(getApplicationContext(), false);
+                setBackgroundRefreshAlarm(getApplicationContext(), false);
             }
             c.close();
         }
@@ -175,12 +206,12 @@ public class StockService extends IntentService {
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         CharSequence text = null;
         if (old.change < 0) {
-            if (changePer <= (old.change/100)) {
+            if (changePer <= ((double)old.change/100) || NOTI_DEBUG_TEST) {
                 text = styledtextDropped(cur, Math.abs(changePer * 100));
             }
         } else if (old.change > 0) {
-            if (changePer >= (old.change/100)) {
-                text = styledTextRisen(cur, changePer * 100);
+            if (changePer >= ((double)old.change/100) || NOTI_DEBUG_TEST) {
+                text = styledTextRisen(cur, (changePer * 100));
             }
         }
         if (text != null) {
@@ -228,6 +259,15 @@ public class StockService extends IntentService {
             cursor.close();
         }
         return id;
+    }
+
+
+    public boolean isConnected() {
+        NetworkInfo info = mConnMgr.getActiveNetworkInfo();
+        if (info != null && info.isConnected()) {
+            return true;
+        }
+        return false;
     }
 
     private Stock cursorToStock(Cursor c) {

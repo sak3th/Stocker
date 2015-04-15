@@ -62,8 +62,10 @@ public class StocksFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver,
-                new IntentFilter(StockService.ACTION_STOCK_NOT_FOUND));
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(StockService.ACTION_STOCKS_UPDATED);
+        intentFilter.addAction(StockService.ACTION_STOCK_NOT_FOUND);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
     }
 
     @Override
@@ -88,6 +90,7 @@ public class StocksFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        StockService.refreshStocks(getActivity());
         loadAllFromDatabase();
         refreshViews();
     }
@@ -97,7 +100,6 @@ public class StocksFragment extends Fragment {
         bundle.putStringArray("key_symbols", new String[]{symbol});
         bundle.putIntArray("key_changes", new int[]{change});
         Log.d(TAG, "adding stock  " + symbol);
-        //getLoaderManager().restartLoader(LOADER_GET_STOCKS, bundle, new GetStocksCallbacks());
         StockService.getStocks(getActivity(), new String[]{symbol}, new int[]{change});
         mTextViewStatus.setText(getString(R.string.status_fetching) + " " + symbol + "...");
         mStatusLayout.setVisibility(View.VISIBLE);
@@ -161,6 +163,10 @@ public class StocksFragment extends Fragment {
             mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
+            if (!mConnected) {
+                mSpinner.setRefreshing(false);
+                return;
+            }
             Log.d(TAG, "manual refresh");
             ContentResolver cr = getActivity().getContentResolver();
             String[] projection = new String[]{Stocker.Stocks.SYMBOL, Stocker.Stocks.CHANGE};
@@ -176,7 +182,7 @@ public class StocksFragment extends Fragment {
                         i++;
                     }
                     mTextViewStatus.setText(R.string.status_updating);
-                    StockService.getStocks(getActivity(), symbols, changes);
+                    StockService.refreshStocks(getActivity());
                 }
                 c.close();
             }
@@ -241,6 +247,9 @@ public class StocksFragment extends Fragment {
                 String symbol = intent.getStringExtra("key_symbol");
                 Toast.makeText(getActivity(),
                         "Stock " + symbol + " not found", Toast.LENGTH_SHORT).show();
+                refreshViews();
+            } else if (intent.getAction().equals(StockService.ACTION_STOCKS_UPDATED)) {
+                setNowAsLastUpdatedTime();
                 refreshViews();
             }
         }
