@@ -70,6 +70,10 @@ public class AddStockFragment extends DialogFragment implements View.OnClickList
             if (mAddStockListener != null) {
                 Editable symbol = mTextViewSymbol.getText();
                 Editable change = mTextViewPicker.getText();
+                if (symbol == null || symbol.toString().trim().length() == 0) {
+                    Toast.makeText(getActivity(), "Incorrect data", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 try {
                     mAddStockListener.onAddStock(symbol.toString(),
                             Integer.valueOf(change.toString()));

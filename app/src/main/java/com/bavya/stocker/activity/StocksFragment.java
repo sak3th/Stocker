@@ -1,10 +1,13 @@
 package com.bavya.stocker.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.ContentObserver;
@@ -13,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bavya.stocker.R;
 import com.bavya.stocker.model.Stock;
@@ -57,6 +62,8 @@ public class StocksFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver,
+                new IntentFilter(StockService.ACTION_STOCK_NOT_FOUND));
     }
 
     @Override
@@ -224,6 +231,18 @@ public class StocksFragment extends Fragment {
             mSpinner.setRefreshing(false);
             setNowAsLastUpdatedTime();
             refreshViews();
+        }
+    };
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(StockService.ACTION_STOCK_NOT_FOUND)) {
+                String symbol = intent.getStringExtra("key_symbol");
+                Toast.makeText(getActivity(),
+                        "Stock " + symbol + " not found", Toast.LENGTH_SHORT).show();
+                refreshViews();
+            }
         }
     };
 

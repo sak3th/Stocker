@@ -14,6 +14,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -36,6 +37,8 @@ public class StockService extends IntentService {
     public static final String ACTION_BOOT = Intent.ACTION_BOOT_COMPLETED;
     public static final String ACTION_GET_STOCKS = "bavya.stocker.action.GET_STOCKS";
     public static final String ACTION_REFRESH = "bavya.stocker.action.REFRESH_STOCKS";
+
+    public static final String ACTION_STOCK_NOT_FOUND = "bavya.stocker.action.STOCK_NOT_FOUND";
 
     private static boolean BG_REFRESH_ENABLED = false;
 
@@ -121,9 +124,16 @@ public class StockService extends IntentService {
         }
         Map<String, yahoofinance.Stock> resMap = YahooFinance.get(symbols);
         for (Map.Entry<String, yahoofinance.Stock> entry : resMap.entrySet()) {
-            Stock stock = new Stock(entry.getValue());
-            stock.change = changeMap.get(entry.getKey());
-            updateStockToDb(stock);
+            yahoofinance.Stock stk = entry.getValue();
+            if (stk.getName().equals("N/A")) {
+                Intent intent = new Intent(ACTION_STOCK_NOT_FOUND);
+                intent.putExtra("key_symbol", stk.getSymbol());
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+            } else {
+                Stock stock = new Stock(stk);
+                stock.change = changeMap.get(entry.getKey());
+                updateStockToDb(stock);
+            }
         }
     }
 
