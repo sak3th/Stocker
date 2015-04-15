@@ -29,10 +29,6 @@ public class EditStockFragment extends DialogFragment implements View.OnClickLis
     private Stock mStock;
 
 
-    // FIXME
-    public EditStockFragment() {
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -52,6 +48,7 @@ public class EditStockFragment extends DialogFragment implements View.OnClickLis
 
         mTextViewPicker = (EditText) v.findViewById(R.id.pickerAD);
         mTextViewPicker.setText(String.valueOf(mStock.change));
+        mTextViewPicker.setSelectAllOnFocus(true);
 
         mUpdate = (Button) v.findViewById(R.id.buttonUpdateAD);
         mCancel = (Button) v.findViewById(R.id.buttonCancelAD);

@@ -62,6 +62,11 @@ public class StockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    public void changeStocks(ArrayList<Stock> stocks) {
+        mStocks = stocks;
+        notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder vh = null;
@@ -79,11 +84,6 @@ public class StockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (holder instanceof StockViewHolder) {
             ((StockViewHolder) holder).bind(getItem(position));
         }
-    }
-
-    public void changeStocks(ArrayList<Stock> stocks) {
-        mStocks = stocks;
-        notifyDataSetChanged();
     }
 
     private Stock getItem(int position) {

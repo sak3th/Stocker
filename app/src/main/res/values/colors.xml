@@ -5,6 +5,7 @@
     <color name="dialog_text">#757999</color>
     <color name="neu_button">#ABADC1</color>
     <color name="picker_bg">#9597AE</color>
-    <color name="green">#46C55C</color>
-    <color name="red">#FE718E</color>
+    <color name="noti_green">#46C55C</color>
+    <color name="noti_red">#FE718E</color>
+    <color name="noti_black">#2D2D2D</color>
 </resources>

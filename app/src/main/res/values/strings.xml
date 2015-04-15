@@ -12,6 +12,11 @@
     <string name="status_minutes">minutes ago</string>
     <string name="status_minute">a minute ago</string>
 
+    <string name="noti_txt_has">" has"</string>
+    <string name="noti_txt_risen">" risen"</string>
+    <string name="noti_txt_dropped">" dropped"</string>
+    <string name="noti_txt_to">" to "</string>
+
     <string-array name="changes_array">
         <item>-20</item>
         <item>-19</item>

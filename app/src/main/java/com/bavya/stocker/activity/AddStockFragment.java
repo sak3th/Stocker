@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +38,7 @@ public class AddStockFragment extends DialogFragment implements View.OnClickList
 
         String[] changes = getResources().getStringArray(R.array.changes_array);
         mTextViewPicker = (EditText) v.findViewById(R.id.pickerAD);
+        mTextViewPicker.setText("1");
 
         mAdd = (Button) v.findViewById(R.id.buttonAddAD);
         mCancel = (Button) v.findViewById(R.id.buttonCancelAD);

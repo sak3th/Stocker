@@ -1,6 +1,5 @@
 package com.bavya.stocker.activity;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,7 +20,7 @@ import com.bavya.stocker.model.Stock;
 import com.bavya.stocker.view.StockAdapter;
 
 
-public class HomeActivity extends Activity implements View.OnClickListener,
+public class HomeActivity extends FragmentActivity implements View.OnClickListener,
         AddStockFragment.OnAddStockListener, EditStockFragment.OnUpdateStockListener,
         StockAdapter.OnStockLongClickListener {
 
@@ -48,7 +48,7 @@ public class HomeActivity extends Activity implements View.OnClickListener,
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
             fragment.setArguments(getIntent().getExtras());
-            getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
         }
     }
 
@@ -61,6 +61,12 @@ public class HomeActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
+        setImmersive();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
         setImmersive();
     }
 
@@ -95,13 +101,11 @@ public class HomeActivity extends Activity implements View.OnClickListener,
     @Override
     public void onAddStock(String symbol, int change) {
         mStocksFragment.addStock(symbol, change);
-        // FIXME create watcher
     }
 
     @Override
     public void onUpdateStock(String symbol, int change) {
         mStocksFragment.updateStock(symbol, change);
-        // TODO change stock watcher
     }
 
     @Override

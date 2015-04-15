@@ -15,8 +15,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
-import com.bavya.stocker.model.Stock;
-
 public class StockProvider extends ContentProvider {
     private static final String TAG = "StockProvider";
 
