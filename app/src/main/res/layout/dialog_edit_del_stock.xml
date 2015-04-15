@@ -25,6 +25,7 @@
             android:background="@drawable/auto_complete_bg"
             android:singleLine="true"
             android:capitalize="characters"
+            android:imeOptions="actionDone"
             android:textSize="14dp"
             android:id="@+id/autoCompleteADSymbol"/>
 
@@ -60,9 +61,10 @@
             android:gravity="center"
             android:background="@drawable/auto_complete_bg"
             android:singleLine="true"
-            android:textSize="14dp"
+            android:imeOptions="actionDone"
             android:digits="0123456789-"
             android:inputType="numberSigned"
+            android:textSize="14dp"
             android:id="@+id/pickerAD"/>
 
         <TextView

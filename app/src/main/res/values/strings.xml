@@ -2,6 +2,8 @@
     <string name="app_name">Stocker</string>
     <string name="action_settings">Settings</string>
 
+    <string name="add_stocks_msg">add stocks to track</string>
+
     <string name="status_internet_down">no internet connection</string>
     <string name="status_no_data">no data received</string>
     <string name="status_fetching">fetching</string>

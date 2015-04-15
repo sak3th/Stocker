@@ -90,10 +90,6 @@ public class StockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return (mStocks != null) ? mStocks.get(position) : null ;
     }
 
-    public int getItems() {
-        return (mStocks != null) ? mStocks.size() : 0;
-    }
-
     @Override
     public int getItemViewType(int position) {
         return ITEM_STOCK;
@@ -130,21 +126,6 @@ public class StockAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             String price = stock.currency + stock.price;
             mName.setText(name);
             mPrice.setText(price);
-        }
-    }
-
-    private class StatusViewHolder extends RecyclerView.ViewHolder {
-        private String mMsg;
-        private TextView mStatus;
-
-        public StatusViewHolder(View view) {
-            super(view);
-            mStatus = (TextView) view.findViewById(R.id.tvStatus);
-        }
-
-        public void bind(String msg) {
-            mMsg = msg;
-            mStatus.setText(msg);
         }
     }
 

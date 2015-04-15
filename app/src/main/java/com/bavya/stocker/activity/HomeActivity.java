@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         mButton = (ImageButton) findViewById(R.id.fabAdd);
         mButton.setOnClickListener(this);
         mConnMgr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        mConnected = isConnected();
         registerReceiver(mConnectivityReceiver,
                 new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
         if (findViewById(R.id.fragment_container) != null) {
@@ -62,6 +65,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         setImmersive();
+        mButton.setVisibility(mConnected? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -119,6 +123,22 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         showEditDialog(stock);
     }
 
+    private void animateButton(final boolean visible) {
+        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(),
+                (visible ? R.anim.slide_up : R.anim.slide_down));
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mButton.setVisibility(visible ? View.VISIBLE : View.GONE);
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        mButton.startAnimation(anim);
+    }
+
     private BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -126,6 +146,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
             if (mConnected != connected || mFirstTime) {
                 mStocksFragment.setConnected(connected);
                 mConnected = connected;
+                animateButton(mConnected);
             }
             mFirstTime = false;
         }

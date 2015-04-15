@@ -257,11 +257,7 @@ public class StocksFragment extends Fragment {
 
     public void setConnected(boolean connected) {
         mConnected = connected;
-        if (mConnected) {
-            refreshViews();
-        } else {
-            mTextViewStatus.setText(R.string.status_internet_down);
-        }
+        refreshViews();
     }
 
     private long getLastUpdatedTime() {
@@ -276,7 +272,7 @@ public class StocksFragment extends Fragment {
     }
 
     private void refreshViews() {
-        if (mAdapter.getItems() > 0) {
+        if (mAdapter.getItemCount() > 0) {
             mTextViewAddMsg.setVisibility(View.GONE);
             mStatusLayout.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.VISIBLE);
@@ -295,6 +291,8 @@ public class StocksFragment extends Fragment {
             }
             mTextViewStatus.setText(sts);
         } else {
+            mTextViewAddMsg.setText(mConnected ?
+                    R.string.add_stocks_msg : R.string.status_internet_down);
             mTextViewAddMsg.setVisibility(View.VISIBLE);
             mStatusLayout.setVisibility(View.GONE);
             mRecyclerView.setVisibility(View.GONE);
@@ -305,7 +303,6 @@ public class StocksFragment extends Fragment {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.rvStocks);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             LinearLayoutManager linearLayoutMgr = new LinearLayoutManager(v.getContext());
-            //linearLayoutMgr.setReverseLayout(true);
             mRecyclerView.setLayoutManager(linearLayoutMgr);
         } else {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(v.getContext(), 2);
