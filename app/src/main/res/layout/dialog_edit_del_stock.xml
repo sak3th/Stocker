@@ -5,136 +5,128 @@
     android:paddingTop="20dp"
     android:paddingBottom="20dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:textSize="18dp"
-            android:fontFamily="sans-serif-light"
-            android:text="edit stock"
-            android:id="@+id/textViewADTitle"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:fontFamily="sans-serif-light"
+        android:text="edit stock"
+        android:id="@+id/textViewADTitle"/>
 
-        <AutoCompleteTextView
-            android:layout_width="160dp"
-            android:layout_height="30dp"
-            android:layout_below="@id/textViewADTitle"
-            android:layout_marginTop="24dp"
-            android:layout_alignLeft="@id/textViewADTitle"
-            android:paddingLeft="6dp"
-            android:background="@drawable/auto_complete_bg"
-            android:singleLine="true"
-            android:capitalize="characters"
-            android:imeOptions="actionDone"
-            android:textSize="14dp"
-            android:id="@+id/autoCompleteADSymbol"/>
+    <AutoCompleteTextView
+        android:layout_width="160dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/textViewADTitle"
+        android:layout_marginTop="24dp"
+        android:layout_alignLeft="@id/textViewADTitle"
+        android:paddingLeft="6dp"
+        android:background="@drawable/auto_complete_bg"
+        android:singleLine="true"
+        android:capitalize="characters"
+        android:imeOptions="actionDone"
+        android:textSize="14dp"
+        android:id="@+id/autoCompleteADSymbol"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_below="@id/textViewADTitle"
-            android:layout_marginTop="24dp"
-            android:layout_toLeftOf="@id/autoCompleteADSymbol"
-            android:layout_marginRight="8dp"
-            android:gravity="center"
-            android:textColor="@color/dialog_text"
-            android:textSize="14dp"
-            android:text="stock symbol"
-            android:id="@+id/stockSymbolTitle"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@id/textViewADTitle"
+        android:layout_marginTop="24dp"
+        android:layout_toLeftOf="@id/autoCompleteADSymbol"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:textColor="@color/dialog_text"
+        android:textSize="14dp"
+        android:text="stock symbol"
+        android:id="@+id/stockSymbolTitle"/>
 
-        <!--<NumberPicker
-            android:layout_width="40dp"
-            android:layout_height="78dp"
-            android:layout_below="@id/autoCompleteADSymbol"
-            android:layout_alignLeft="@id/autoCompleteADSymbol"
-            android:showDividers="none"
-            android:scaleX=".8"
-            android:scaleY=".8"
-            android:id="@+id/numberPickerAD"/>-->
+    <!--<NumberPicker
+        android:layout_width="40dp"
+        android:layout_height="78dp"
+        android:layout_below="@id/autoCompleteADSymbol"
+        android:layout_alignLeft="@id/autoCompleteADSymbol"
+        android:showDividers="none"
+        android:scaleX=".8"
+        android:scaleY=".8"
+        android:id="@+id/numberPickerAD"/>-->
 
-        <EditText
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_below="@id/autoCompleteADSymbol"
-            android:layout_marginTop="24dp"
-            android:layout_alignLeft="@id/autoCompleteADSymbol"
-            android:gravity="center"
-            android:background="@drawable/auto_complete_bg"
-            android:singleLine="true"
-            android:imeOptions="actionDone"
-            android:digits="0123456789-"
-            android:inputType="numberSigned"
-            android:textSize="14dp"
-            android:id="@+id/pickerAD"/>
+    <EditText
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/autoCompleteADSymbol"
+        android:layout_marginTop="24dp"
+        android:layout_alignLeft="@id/autoCompleteADSymbol"
+        android:gravity="center"
+        android:background="@drawable/auto_complete_bg"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        android:digits="0123456789-"
+        android:inputType="numberSigned"
+        android:textSize="14dp"
+        android:id="@+id/pickerAD"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_below="@id/stockSymbolTitle"
-            android:layout_marginTop="24dp"
-            android:layout_toLeftOf="@id/pickerAD"
-            android:layout_marginRight="8dp"
-            android:gravity="center"
-            android:textColor="@color/dialog_text"
-            android:textSize="14dp"
-            android:text="notify once when"
-            android:id="@+id/textViewADNotifyLeft" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@id/stockSymbolTitle"
+        android:layout_marginTop="24dp"
+        android:layout_toLeftOf="@id/pickerAD"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:textColor="@color/dialog_text"
+        android:textSize="14dp"
+        android:text="notify once when"
+        android:id="@+id/textViewADNotifyLeft" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_below="@id/autoCompleteADSymbol"
-            android:layout_marginTop="24dp"
-            android:layout_toRightOf="@id/pickerAD"
-            android:layout_marginLeft="4dp"
-            android:gravity="center"
-            android:textColor="@color/dialog_text"
-            android:textSize="14dp"
-            android:text="% price changes"
-            android:id="@+id/textViewADNotifyRight" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_below="@id/autoCompleteADSymbol"
+        android:layout_marginTop="24dp"
+        android:layout_toRightOf="@id/pickerAD"
+        android:layout_marginLeft="4dp"
+        android:gravity="center"
+        android:textColor="@color/dialog_text"
+        android:textSize="14dp"
+        android:text="% price changes"
+        android:id="@+id/textViewADNotifyRight" />
 
-        <Button
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/textViewADNotifyLeft"
-            android:layout_marginTop="40dp"
-            android:layout_marginLeft="40dp"
-            android:background="@drawable/pos_btn_bg"
-            android:textAllCaps="false"
-            android:textColor="@android:color/primary_text_dark"
-            android:textSize="18dp"
-            android:fontFamily="sans-serif-light"
-            android:text="update"
-            android:id="@+id/buttonUpdateAD"/>
+    <Space
+        android:layout_width="26dp"
+        android:layout_height="36dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/pickerAD"
+        android:layout_marginTop="40dp"
+        android:id="@+id/spaceMiddle"/>
 
-        <Button
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/textViewADNotifyLeft"
-            android:layout_marginTop="40dp"
-            android:layout_marginRight="40dp"
-            android:background="@drawable/neg_btn_bg"
-            android:textAllCaps="false"
-            android:textColor="@android:color/primary_text_dark"
-            android:textSize="18dp"
-            android:fontFamily="sans-serif-light"
-            android:text="delete"
-            android:id="@+id/buttonDeleteAD"/>
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_toLeftOf="@id/spaceMiddle"
+        android:layout_below="@id/textViewADNotifyLeft"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/pos_btn_bg"
+        android:textAllCaps="false"
+        android:textColor="@android:color/primary_text_dark"
+        android:textSize="18dp"
+        android:fontFamily="sans-serif-light"
+        android:text="update"
+        android:id="@+id/buttonUpdateAD"/>
 
-        <Button
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/textViewADNotifyLeft"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/neu_btn_bg"
-            android:textAllCaps="false"
-            android:textColor="@android:color/primary_text_dark"
-            android:textSize="18dp"
-            android:fontFamily="sans-serif-light"
-            android:text="cancel"
-            android:id="@+id/buttonCancelAD"/>
+    <Button
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@id/spaceMiddle"
+        android:layout_below="@id/textViewADNotifyLeft"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/neu_btn_bg"
+        android:textAllCaps="false"
+        android:textColor="@android:color/primary_text_dark"
+        android:textSize="18dp"
+        android:fontFamily="sans-serif-light"
+        android:text="cancel"
+        android:id="@+id/buttonCancelAD"/>
 
 </RelativeLayout>

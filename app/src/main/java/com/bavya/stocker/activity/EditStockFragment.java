@@ -2,8 +2,8 @@ package com.bavya.stocker.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +22,7 @@ public class EditStockFragment extends DialogFragment implements View.OnClickLis
 
     private AutoCompleteTextView mTextViewSymbol;
     private EditText mTextViewPicker;
-    private Button mUpdate, mCancel, mDelete;
+    private Button mUpdate, mCancel;
 
     private OnUpdateStockListener mUpdateStockListener;
 
@@ -52,10 +52,8 @@ public class EditStockFragment extends DialogFragment implements View.OnClickLis
 
         mUpdate = (Button) v.findViewById(R.id.buttonUpdateAD);
         mCancel = (Button) v.findViewById(R.id.buttonCancelAD);
-        mDelete = (Button) v.findViewById(R.id.buttonDeleteAD);
         mUpdate.setOnClickListener(this);
         mCancel.setOnClickListener(this);
-        mDelete.setOnClickListener(this);
         return v;
     }
 
@@ -94,9 +92,6 @@ public class EditStockFragment extends DialogFragment implements View.OnClickLis
             }
         } else if (v.getId() == R.id.buttonCancelAD) {
             dismiss();
-        } else if (v.getId() == R.id.buttonDeleteAD) {
-            mUpdateStockListener.onDeleteStock(mStock);
-            dismiss();
         }
     }
 
@@ -107,7 +102,6 @@ public class EditStockFragment extends DialogFragment implements View.OnClickLis
     }
 
     public interface OnUpdateStockListener {
-        public void onUpdateStock(String symbol, int change);
-        public void onDeleteStock(Stock stock);
+        void onUpdateStock(String symbol, int change);
     }
 }

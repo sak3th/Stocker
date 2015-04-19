@@ -1,6 +1,5 @@
 package com.bavya.stocker.activity;
 
-import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -18,13 +17,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.bavya.stocker.R;
-import com.bavya.stocker.model.Stock;
-import com.bavya.stocker.view.StockAdapter;
 
 
 public class HomeActivity extends FragmentActivity implements View.OnClickListener,
-        AddStockFragment.OnAddStockListener, EditStockFragment.OnUpdateStockListener,
-        StockAdapter.OnStockLongClickListener {
+        AddStockFragment.OnAddStockListener, EditStockFragment.OnUpdateStockListener {
 
     private ImageButton mButton;
     private StocksFragment mStocksFragment;
@@ -65,7 +61,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
         setImmersive();
-        mButton.setVisibility(mConnected? View.VISIBLE : View.GONE);
+        mButton.setVisibility(mConnected ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -81,20 +77,12 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         } else {
             Toast.makeText(getApplicationContext(), "Cannot add stock now!", Toast.LENGTH_SHORT).show();
         }
+        mStocksFragment.onOutsideTouchEvent();
     }
 
     private void showAddDialog() {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         AddStockFragment newFragment = new AddStockFragment();
-        newFragment.show(fragmentManager, "dialog");
-    }
-
-    private void showEditDialog(Stock stock) {
-        FragmentManager fragmentManager = getFragmentManager();
-        EditStockFragment newFragment = new EditStockFragment();
-        Bundle b = new Bundle();
-        b.putParcelable("key_stock", stock);
-        newFragment.setArguments(b);
         newFragment.show(fragmentManager, "dialog");
     }
 
@@ -110,17 +98,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onUpdateStock(String symbol, int change) {
         mStocksFragment.updateStock(symbol, change);
-    }
-
-    @Override
-    public void onDeleteStock(Stock stock) {
-        mStocksFragment.removeStock(stock);
-    }
-
-    @Override
-    public void onStockLongClick(Stock stock) {
-        Log.d("HomeActivity", "onStockLongClick: " + stock);
-        showEditDialog(stock);
     }
 
     private void animateButton(final boolean visible) {

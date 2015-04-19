@@ -2,35 +2,74 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_stock_height"
-    android:id="@+id/stockItemLayout">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="16dp"
-        android:gravity="center"
-        android:textSize="@dimen/item_stock_text_size"
-        android:fontFamily="sans-serif-light"
-        android:text="Stock [STK]"
-        android:id="@+id/tvStockName"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
-        android:gravity="center"
-        android:fontFamily="sans-serif-light"
-        android:textSize="@dimen/item_stock_text_size"
-        android:text="$120"
-        android:id="@+id/tvStockPrice"/>
+    android:id="@+id/layoutStockItem">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/divider"/>
+        android:background="@color/divider"
+        android:id="@+id/dividerBottom"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@id/dividerBottom"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@android:color/holo_red_light"
+        android:gravity="center"
+        android:textSize="@dimen/item_stock_text_size"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@android:color/primary_text_dark"
+        android:text="Delete"
+        android:visibility="gone"
+        android:id="@+id/tvStockDelete"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/tvStockDelete"
+        android:layout_above="@id/dividerBottom"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="@color/picker_bg"
+        android:gravity="center"
+        android:textSize="@dimen/item_stock_text_size"
+        android:fontFamily="sans-serif-light"
+        android:textColor="@android:color/primary_text_dark"
+        android:text="Update"
+        android:visibility="gone"
+        android:id="@+id/tvStockUpdate"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/dividerBottom"
+        android:background="@color/app_bg"
+        android:id="@+id/layoutStockFg">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="16dp"
+            android:gravity="center"
+            android:textSize="@dimen/item_stock_text_size"
+            android:fontFamily="sans-serif-light"
+            android:text="Stock [STK]"
+            android:id="@+id/tvStockName"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:gravity="center"
+            android:fontFamily="sans-serif-light"
+            android:textSize="@dimen/item_stock_text_size"
+            android:text="$120"
+            android:id="@+id/tvStockPrice"/>
+    </RelativeLayout>
 
     <View
         android:layout_width="1dp"

@@ -3,10 +3,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="status_height">52dp</dimen>
+    <dimen name="status_height">38dp</dimen>
     <dimen name="status_text_size">14dp</dimen>
-    <dimen name="item_stock_height">86dp</dimen>
-    <dimen name="item_stock_text_size">24dp</dimen>
+    <dimen name="item_stock_height">58dp</dimen>
+    <dimen name="item_stock_text_size">18dp</dimen>
 
     <dimen name="dialog_width">380dp</dimen>
 </resources>

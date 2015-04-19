@@ -16,14 +16,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +50,6 @@ public class StocksFragment extends Fragment {
     private View mStatusLayout;
     private SwipeRefreshLayout mSpinner;
 
-    private StockAdapter.OnStockLongClickListener mStockLongClickListener;
     private Context mContext;
     private boolean mConnected;
 
@@ -54,7 +57,6 @@ public class StocksFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ((HomeActivity)activity).setStocksFragment(this);
-        mStockLongClickListener = (StockAdapter.OnStockLongClickListener) activity;
         mContext = activity.getApplicationContext();
     }
 
@@ -81,7 +83,7 @@ public class StocksFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mAdapter = new StockAdapter(mStockLongClickListener);
+        mAdapter = new StockAdapter(mItemActionListener);
         mRecyclerView.setAdapter(mAdapter);
         getActivity().getContentResolver().registerContentObserver(
                 Stocker.Stocks.CONTENT_URI, true, mDatabaseObserver);
@@ -93,6 +95,10 @@ public class StocksFragment extends Fragment {
         StockService.refreshStocks(getActivity());
         loadAllFromDatabase();
         refreshViews();
+    }
+
+    public void onOutsideTouchEvent() {
+        mAdapter.resetItemViews();
     }
 
     public void addStock(String symbol, int change) {
@@ -298,6 +304,32 @@ public class StocksFragment extends Fragment {
             mRecyclerView.setVisibility(View.GONE);
         }
     }
+
+    private StockAdapter.ItemActionListener mItemActionListener
+            = new StockAdapter.ItemActionListener() {
+        @Override
+        public void onUpdateRequested(Stock stock) {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            EditStockFragment newFragment = new EditStockFragment();
+            Bundle b = new Bundle();
+            b.putParcelable("key_stock", stock);
+            newFragment.setArguments(b);
+            newFragment.show(fragmentManager, "dialog");
+        }
+
+        @Override
+        public void onDeleteRequested(Stock stock) {
+            removeStockFromDb(stock);
+        }
+
+        @Override
+        public void onSwipe(boolean valid) {
+            Log.d(TAG, "Valid swipe: " + valid);
+            mSpinner.setEnabled(!valid);
+            mRecyclerView.requestDisallowInterceptTouchEvent(valid);
+            //mRecyclerView.setEnabled(!valid);
+        }
+    };
 
     private void initViews(View v) {
         mRecyclerView = (RecyclerView) v.findViewById(R.id.rvStocks);
